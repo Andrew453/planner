@@ -8,7 +8,7 @@ import com.rabbitmq.client.DeliverCallback;
 
 import java.io.IOException;
 
-public class Queue {
+public class Listener {
     private static final String USER = "guest";
     private static final String HOST = "127.0.0.1";
     private static final String PASS = "guest";
@@ -16,7 +16,7 @@ public class Queue {
     String EXCHANGE_NAME;
     String ROUTING_KEY;
     Channel channel;
-    Queue(String rKey, String exchangeName, String queueName) throws IOException {
+    Listener(String rKey, String exchangeName, String queueName) throws IOException {
         ROUTING_KEY = rKey;
         EXCHANGE_NAME = exchangeName;
         QUEUE_NAME = queueName;

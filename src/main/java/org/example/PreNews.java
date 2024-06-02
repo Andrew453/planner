@@ -4,21 +4,30 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
-public class NewsHeader {
+public class PreNews {
     String title;
-    String date;
     String link;
+    String date;
+    Boolean ok;
     String hashMD5;
     Boolean read = false;
     int ID;
 
-    NewsHeader(String title, String date, String link) {
+    PreNews(String title, String date, String link) {
         this.title = title;
+        if (link != "") {
+            if (link.contains("sport")) {
+                this.ok = false;
+                return;
+            }
+            this.link = "https://www.interfax.ru" + link;
+        } else {
+            this.ok = false;
+            return;
+        }
         this.date = date;
-        this.link = link;
+
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("MD5");
@@ -28,14 +37,14 @@ public class NewsHeader {
         byte[] messageDigest = md.digest((this.title + this.link).getBytes());
         BigInteger no = new BigInteger(1, messageDigest);
         this.hashMD5 = no.toString(16);
-        this.ID = (int)UUID.randomUUID().getMostSignificantBits();
+        this.ID = (int) UUID.randomUUID().getMostSignificantBits();
+        this.ok = true;
     }
 
-    public void Store() {
-        System.out.println("Новость");
-        System.out.println(this.date);
-        System.out.println(this.title);
-        System.out.println(this.link);
-        System.out.println(this.hashMD5);
+    void print() {
+        System.out.println("Title: " + title);
+        System.out.println("Link:" + link);
+        System.out.println("Date:" + date);
+        System.out.println("Hash: " + hashMD5);
     }
 }
